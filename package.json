@@ -5,12 +5,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "genTw": "node templates/tw-gen.mjs"
   },
   "dependencies": {
     "@types/alpinejs": "^3.7.0",
     "alpinejs": "^3.8.1",
     "isomorphic-dompurify": "^0.17.0",
+    "isomorphic-fetch": "^3.0.0",
     "next": "12.0.8",
     "react": "17.0.2",
     "react-dom": "17.0.2"
