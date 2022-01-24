@@ -2,28 +2,21 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react';
 
-/* const DynamicComponent = dynamic(() => import('../components/alpineComponent'),
-  { ssr: false })
-const StaticComponent = dynamic(() => import('../components/staticComponent')) */
 const getComponents = async () => {
-  const data = await fetch('http://localhost:3000/api/hello');
+  const data = await fetch('http://localhost:3000/api/blocks');
 
-  console.log(await data.json());
-  return [
+  const result = await data.json();
+  return result.map(({ contentHTML, ssr }) => (
     {
-      component: dynamic(() => import('../components/alpineComponent'),
-        { ssr: false }),
-    },
-    {
-      component: dynamic(() => import('../components/staticComponent')),
+      component: dynamic(() => import('../components/SanitizedComponent'),
+        { ssr: ssr }),
+      props: { contentHTML }
     }
-  ]
+  ))
 }
 const components = await getComponents();
 export default function Home() {
-
   return (
     <div className={styles.container}>
       <Head>
@@ -37,11 +30,11 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-          {components.map((component, index) => {
-            const MyCompo = component.component;
-            return (
-              <MyCompo key={index} />)
-          })}
+        {components.map((component, index) => {
+          const MyCompo = component.component;
+          return (
+            <MyCompo key={index} {...component.props}/>)
+        })}
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
