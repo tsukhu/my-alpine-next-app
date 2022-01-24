@@ -3,7 +3,7 @@ import fs from 'fs';
 
 const createTWJSfile = async () => {
     try {
-        fetch('http://localhost:3000/api/blocks')
+        fetch('http://localhost:3000/api/cms')
             .then(function (response) {
                 if (response.status >= 400) {
                     throw new Error("Bad response from server");

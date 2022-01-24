@@ -4,18 +4,26 @@ import dynamic from 'next/dynamic'
 
 const getComponents = async () => {
   const data = await fetch('http://localhost:3000/api/blocks');
-
   const result = await data.json();
-  return result.map(({ contentHTML, ssr }) => (
+  return result.map(({ name, ssr }) => (
     {
       component: dynamic(() => import('../components/SanitizedComponent'),
         { ssr: ssr }),
-      props: { contentHTML }
+      name
     }
   ))
 }
 const components = await getComponents();
-export default function Home() {
+export async function getStaticProps(context) { 
+  const data = await fetch('http://localhost:3000/api/cms');
+  const result = await data.json();
+  return {
+    props: { content: result }, // will be passed to the page component as props
+  }
+}
+
+export default function Home({ content }) {
+
   return (
     <div className="font-sans flex flex-col h-screen w-full items-center align-middle">
       <Head>
@@ -35,8 +43,10 @@ export default function Home() {
         <div className='flex flex-col w-full space-y-2'>
           {components.map((component, index) => {
             const MyCompo = component.component;
+            const data = content.find((c) => c.name === component.name);
+            const contentHTML = data && data.contentHTML ? data.contentHTML : '<p>No Content</p>';
             return (
-              <MyCompo key={index} {...component.props} />)
+              <MyCompo key={index} contentHTML={contentHTML} />)
           })}
         </div>
 
