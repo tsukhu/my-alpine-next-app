@@ -73,12 +73,7 @@ export default function Demo() {
 
   React.useEffect(() => {
     if (refresh) {
-      //    setMyComponent(null);
       setContentHTML(content);
-      /*    const loadComponent = async () => {
-             return await dynamic(() => import('../components/SanitizedComponent'));
-         }
-         loadComponent().then((component) => setMyComponent(component)) */
       setRefresh(false);
     }
   }, [refresh])
@@ -130,8 +125,8 @@ export default function Demo() {
                     id="exampleFormControlTextarea1"
                     rows="3"
                     placeholder="Your message"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    value={contentHTML}
+                    onChange={(e) => setContentHTML(e.target.value)}
                     rows={40}
                   ></textarea>
                 </div>
