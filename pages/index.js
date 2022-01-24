@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Image from 'next/image'
+import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
 const getComponents = async () => {
@@ -29,12 +29,15 @@ export default function Home() {
         <h1 className="text-gray-700 font-bold text-4xl text-center m-2">
           Welcome to <a href="https://nextjs.org" className='hover:underline text-blue-700'>Next.js!</a>
         </h1>
+        <h2 className="text-gray-700 font-bold text-baseline text-center m-2">
+          <Link href="/demo" className='hover:underline text-blue-700'>Demo</Link>
+        </h2>
         <div className='flex flex-col w-full space-y-2'>
-        {components.map((component, index) => {
-          const MyCompo = component.component;
-          return (
-            <MyCompo key={index} {...component.props}/>)
-        })}
+          {components.map((component, index) => {
+            const MyCompo = component.component;
+            return (
+              <MyCompo key={index} {...component.props} />)
+          })}
         </div>
 
       </main>
