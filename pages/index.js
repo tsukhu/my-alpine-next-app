@@ -14,6 +14,8 @@ const getComponents = async () => {
   ))
 }
 const components = await getComponents();
+
+const HelloWorld = dynamic(() => import('../components/helloWorld'));
 export async function getStaticProps(context) { 
   const data = await fetch('http://localhost:3000/api/cms');
   const result = await data.json();
@@ -23,7 +25,10 @@ export async function getStaticProps(context) {
 }
 
 export default function Home({ content }) {
-
+  const hello = [
+    {key: 'key1', name: 'Hello1'},
+    {key: 'key2', name: 'Hello2'},
+  ]
   return (
     <div className="font-sans flex flex-col h-screen w-full items-center align-middle">
       <Head>
@@ -40,6 +45,7 @@ export default function Home({ content }) {
         <h2 className="text-gray-700 font-bold text-baseline text-center m-2">
           <Link href="/demo" className='hover:underline text-blue-700'>Demo</Link>
         </h2>
+        <HelloWorld data={hello}/>
         <div className='flex flex-col w-full space-y-2'>
           {components.map((component, index) => {
             const MyCompo = component.component;
